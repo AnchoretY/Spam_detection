@@ -130,7 +130,7 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 
    利用邮箱客户端和DKIM显示与加密头部签名内容的策略不同进行欺骗邮件头部。
 
-   > 原理：当存在多个Subject、Content-Type时，Gmail等邮箱客户端都只会显示第一个，而DKIM仅仅会覆盖最后一个请求行。
+   > 原理：当存在多个Subject、Content-Type时，Gmail等邮箱客户端都只会显示第一个，而DKIM仅仅会使用最后一个。
 
    > 如果标题中包含了两个’to’字段，并且两者都应该写被保护，那么就应该在签名的’h’选项中包含’to’两次。
 
@@ -184,7 +184,16 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 
    ![image](https://raw.githubusercontent.com/AnchoretY/images/master/blog/image.0a13630dzand.png)
 
+   &emsp;&emsp;在”signed-by”字段中可以看到签名仍然有效。而且如果我们查看邮件的来源，Gmail会提供一个很好的摘要，其中包括攻击者设置的Date以及Messahe-Id.由于DKIM签名与显示的发件人DMARC的域相匹配，所以即使邮件未通过DHL的邮件服务器发送，也会成功：
 
+   ![image](https://raw.githubusercontent.com/AnchoretY/images/master/blog/image.yrmo1sa2t3r.png)
+
+   > 这一问题是非常严重的一个邮件安全问题，要想进行避免这个问题，需要发送方与接收方共同努力：
+   >
+   > - 发送方：签名本身需要包含可能会影响邮件显示的所有邮件头
+   > - 接收方：对于没有包含在签名中的标题应该格外小心
+
+   
 
 【参考文献】
 
