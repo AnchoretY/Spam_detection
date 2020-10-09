@@ -2,7 +2,7 @@
 
 ## 电子邮件协议
 
-1. SMTP
+1. SMTP 邮件发送的协议
 
 2. POP3
 
@@ -67,6 +67,28 @@ a.spf.163.com.		60	IN	TXT	"v=spf1 ip4:220.181.12.0/22 ip4:220.181.31.0/24 ip4:12
 **生效时间：**
 
 > SPF 记录本质上是一个 DNS 记录，所以并不是修改之后立即生效的——通常需要几个小时的时间。
+
+**检测是否能够通过SPF验证：**
+
+&emsp;&emsp;这里可以使用一个在线验证网站进行查询：[SPF Record Testing Tools](https://www.kitterman.com/spf/validate.html?)
+
+&emsp;&emsp;首先对邮箱服务器对应的SPF记录进行查询（当然这里也可以使用dig命令进行手动查询）：
+
+![image](https://raw.githubusercontent.com/AnchoretY/images/master/blog/image.96vuhoz1jkm.png)
+
+&emsp;&emsp;查询结果如下：
+
+![image](https://raw.githubusercontent.com/AnchoretY/images/master/blog/image.f2n2dkn46sw.png)
+
+&emsp;&emsp;输入IP、spf记录、发送域名、HELO内容进行SPF验证。
+
+![image](https://raw.githubusercontent.com/AnchoretY/images/master/blog/image.cn7hyhwmcd5.png)
+
+&emsp;&emsp;最终查询结果如下：
+
+![image](https://raw.githubusercontent.com/AnchoretY/images/master/blog/image.uxusao4lund.png)
+
+&emsp;&emsp;`Results - PASS sender SPF authorized`表示验证成功。验证失败则显示为`Results - FAIL Message may be rejected`
 
 
 
@@ -193,7 +215,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
    > - 发送方：签名本身需要包含可能会影响邮件显示的所有邮件头
    > - 接收方：对于没有包含在签名中的标题应该格外小心
 
-   
+4. ### DMARC
+
+   &emsp;&emsp;DMARC全称Domain-based Message Authentication,是一个**构建在SPF和DKIM技术上的解决方案**。
+
+   核心思想：
+
+   >  邮件的发送方通过特定方式 (DNS) 公开标明自己会用到的发件服务器 (SPF)、并对发出的邮件内容进行签名 (DKIM)
+   >
+   >  邮件的接受方则检查收到的邮件是否来自发送方授权过的服务器、并且核对签名是否有效。对于未能通过前述检查项目的邮件，接受方则按照发送方指定的策略进行处理【比如直接投入垃圾箱或者拒收】，从而有效避免伪造的钓鱼邮件进入用户的收件箱。
+
+
 
 【参考文献】
 
