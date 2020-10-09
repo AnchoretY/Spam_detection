@@ -231,4 +231,6 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 
 - [绕过DKIM验证，伪造钓鱼邮件- 知乎](https://zhuanlan.zhihu.com/p/29965126)
 - [电子邮件欺诈防护之SPF+DKIM+DMARC | Zach Ke's Notes](https://kebingzao.com/2020/03/17/mail-spf-dkim-dmarc/)
+- [Understanding email authentication headers - Valimail](https://www.valimail.com/blog/understanding-email-authentication-headers/)
+- [邮件伪造组合拳- 安全客，安全资讯平台](https://www.anquanke.com/post/id/218889)
 
